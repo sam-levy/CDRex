@@ -1,6 +1,7 @@
 defmodule CDRex.Factory do
   use CDRex.Factories.ClientRateFactory
   use CDRex.Factories.CarrierRateFactory
+  use CDRex.Factories.CDRFactory
 
   def build(factory_name, attributes \\ []) do
     factory_name |> factory(attributes) |> struct(attributes)
@@ -27,6 +28,14 @@ defmodule CDRex.Factory do
   def random_string_number, do: random_number() |> to_string()
 
   def random_past_date, do: Date.utc_today() |> Date.add(random_number() * -1)
+
+  def truncated_naivedatetime do
+    NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+  end
+
+  def random_past_naivedatetime do
+    truncated_naivedatetime() |> NaiveDateTime.add(random_number() * -1)
+  end
 
   defp sequence(fun) when is_function(fun, 1) do
     fun.(System.unique_integer([:positive, :monotonic]))
