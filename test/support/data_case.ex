@@ -24,6 +24,7 @@ defmodule CDRex.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import CDRex.DataCase
+      import CDRex.Factory
     end
   end
 
