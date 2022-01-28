@@ -8,16 +8,11 @@ defmodule CDRex.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
       CDRex.Repo,
-      # Start the Telemetry supervisor
       CDRexWeb.Telemetry,
-      # Start the PubSub system
       {Phoenix.PubSub, name: CDRex.PubSub},
-      # Start the Endpoint (http/https)
-      CDRexWeb.Endpoint
-      # Start a worker by calling: CDRex.Worker.start_link(arg)
-      # {CDRex.Worker, arg}
+      CDRexWeb.Endpoint,
+      {CDRex.Initializer, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
