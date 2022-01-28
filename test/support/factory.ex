@@ -1,5 +1,5 @@
 defmodule CDRex.Factory do
-  use CDRex.Factories.ClientRateFactory
+  use CDRex.Factories.ClientFeeFactory
   use CDRex.Factories.CarrierRateFactory
   use CDRex.Factories.CDRFactory
   use CDRex.Factories.FileHashFactory

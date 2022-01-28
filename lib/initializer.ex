@@ -12,7 +12,7 @@ defmodule CDRex.Initializer do
       :ok
     else
       carrier_rates_file_path = Application.app_dir(:cdrex, "priv/assets/buy_rates.csv")
-      _client_rates_file_path = Application.app_dir(:cdrex, "priv/assets/sell_rates.csv")
+      _client_fees_file_path = Application.app_dir(:cdrex, "priv/assets/sell_rates.csv")
 
       case CarrierRates.create_from_csv(carrier_rates_file_path) do
         {:ok, _} -> IO.puts("Updated carrier rates from CSV file")

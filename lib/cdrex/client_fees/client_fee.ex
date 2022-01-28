@@ -1,17 +1,19 @@
-defmodule CDRex.ClientRates.ClientRate do
+defmodule CDRex.ClientFees.ClientFee do
   use CDRex.Schema
 
-  schema "client_rates" do
+  schema "client_fees" do
     field :client_code, :string
     field :start_date, :date
-    field :rate, :float
+    field :fee, :float
     field :service, CDRex.Enums.ServiceType
     field :direction, CDRex.Enums.DirectionType
 
     timestamps()
   end
 
-  @fields [:client_code, :start_date, :rate, :service, :direction]
+  @fields [:client_code, :start_date, :fee, :service, :direction]
+
+  def fields, do: @fields
 
   def changeset(target \\ %__MODULE__{}, attrs) do
     target
@@ -19,8 +21,8 @@ defmodule CDRex.ClientRates.ClientRate do
     |> validate_required(@fields)
     |> validate_length(:client_code, max: 255)
     |> unique_constraint([:direction, :service, :start_date, :client_code],
-      name: :client_rates_unique_rate,
-      message: "The rate for this client_code, start_date, service and direction already exists"
+      name: :client_fees_unique_fee,
+      message: "The fee for this client_code, start_date, service and direction already exists"
     )
   end
 end
