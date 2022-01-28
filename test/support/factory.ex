@@ -2,6 +2,7 @@ defmodule CDRex.Factory do
   use CDRex.Factories.ClientRateFactory
   use CDRex.Factories.CarrierRateFactory
   use CDRex.Factories.CDRFactory
+  use CDRex.Factories.FileHashFactory
 
   def build(factory_name, attributes \\ []) do
     factory_name |> factory(attributes) |> struct(attributes)
