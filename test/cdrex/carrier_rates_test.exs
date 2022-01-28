@@ -3,9 +3,11 @@ defmodule CDRex.CarrierRatesTest do
 
   alias CDRex.CarrierRates
   alias CDRex.CarrierRates.CarrierRate
+  alias CDRex.FileHashes
+  alias CDRex.FileHashes.FileHash
 
   describe "create_from_csv/1" do
-    test "creates carrier rates from a CSV file" do
+    test "creates carrier rates from a CSV file and add insert file hash" do
       csv_file_path = "test/support/assets/buy_rates.csv"
 
       assert {:ok,
@@ -53,6 +55,10 @@ defmodule CDRex.CarrierRatesTest do
                   start_date: ~D[2020-01-01]
                 }
               ]} = CarrierRates.create_from_csv(csv_file_path)
+
+      file_hash = FileHashes.hash_file(csv_file_path)
+
+      assert %FileHash{hash: ^file_hash} = Repo.get_by(FileHash, hash: file_hash)
     end
 
     test "updates existing carrier rates" do
@@ -159,6 +165,19 @@ defmodule CDRex.CarrierRatesTest do
                service: :voice,
                start_date: ~D[2020-01-01]
              )
+
+      file_hash = FileHashes.hash_file(csv_file_path)
+
+      assert %FileHash{hash: ^file_hash} = Repo.get_by(FileHash, hash: file_hash)
+    end
+
+    test "return error when file has already been imported" do
+      csv_file_path = "test/support/assets/buy_rates.csv"
+
+      assert {:ok, _carrier_rates} = CarrierRates.create_from_csv(csv_file_path)
+
+      assert CarrierRates.create_from_csv(csv_file_path) ==
+               {:error, "the file has already been imported"}
     end
 
     test "returns changeset errors when csv contains invalid values" do
@@ -167,22 +186,34 @@ defmodule CDRex.CarrierRatesTest do
       assert {:error, changeset} = CarrierRates.create_from_csv(csv_file_path)
 
       assert errors_on(changeset) == %{
-        direction: ["is invalid"],
-        start_date: ["is invalid"],
-        rate: ["is invalid"]
-      }
+               direction: ["is invalid"],
+               start_date: ["is invalid"],
+               rate: ["is invalid"]
+             }
+
+      file_hash = FileHashes.hash_file(csv_file_path)
+
+      refute Repo.get_by(FileHash, hash: file_hash)
     end
 
     test "malformed csv file" do
       csv_file_path = "test/support/assets/malformed_less_values.csv"
 
       assert CarrierRates.create_from_csv(csv_file_path) == {:error, "malformed csv file"}
+
+      file_hash = FileHashes.hash_file(csv_file_path)
+
+      refute Repo.get_by(FileHash, hash: file_hash)
     end
 
     test "empty csv file" do
       csv_file_path = "test/support/assets/empty.csv"
 
       assert CarrierRates.create_from_csv(csv_file_path) == {:error, "empty file"}
+
+      file_hash = FileHashes.hash_file(csv_file_path)
+
+      refute Repo.get_by(FileHash, hash: file_hash)
     end
   end
 end
