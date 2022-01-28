@@ -5,7 +5,7 @@ defmodule CDRex.FileHashes do
   def hash_file(file_path) do
     file_path
     |> File.stream!([], 2_048)
-    |> Enum.reduce(:crypto.hash_init(:sha256),&(:crypto.hash_update(&2, &1)))
+    |> Enum.reduce(:crypto.hash_init(:sha256), &:crypto.hash_update(&2, &1))
     |> :crypto.hash_final()
     |> Base.encode16()
     |> String.downcase()

@@ -1,4 +1,4 @@
-defmodule CDRex.ClientFees.AttrsTest  do
+defmodule CDRex.ClientFees.AttrsTest do
   use CDRex.DataCase, async: true
 
   alias CDRex.ClientFees.Attrs

@@ -28,8 +28,8 @@ defmodule CDRex.FileHashes.FileHashTest do
       assert changeset.valid?
 
       assert changeset.changes == %{
-        hash: attrs[:hash]
-      }
+               hash: attrs[:hash]
+             }
     end
 
     test "invalid attrs" do
@@ -42,8 +42,8 @@ defmodule CDRex.FileHashes.FileHashTest do
       refute changeset.valid?
 
       assert errors_on(changeset) == %{
-        hash: ["is invalid"]
-      }
+               hash: ["is invalid"]
+             }
     end
 
     test "missing required attrs" do
@@ -52,8 +52,8 @@ defmodule CDRex.FileHashes.FileHashTest do
       refute changeset.valid?
 
       assert errors_on(changeset) == %{
-        hash: ["can't be blank"]
-      }
+               hash: ["can't be blank"]
+             }
     end
 
     test "hash field length greater than 64 chars" do
@@ -66,8 +66,8 @@ defmodule CDRex.FileHashes.FileHashTest do
       refute changeset.valid?
 
       assert errors_on(changeset) == %{
-        hash: ["should be at most 64 character(s)"]
-      }
+               hash: ["should be at most 64 character(s)"]
+             }
     end
 
     test "hash field unique constraint" do
@@ -78,13 +78,13 @@ defmodule CDRex.FileHashes.FileHashTest do
       }
 
       assert {:error, changeset} =
-        attrs
-        |> FileHash.changeset()
-        |> Repo.insert
+               attrs
+               |> FileHash.changeset()
+               |> Repo.insert()
 
       assert errors_on(changeset) == %{
-        hash: ["the file has already been imported"]
-      }
+               hash: ["the file has already been imported"]
+             }
     end
   end
 end

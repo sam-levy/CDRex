@@ -1,5 +1,4 @@
 defmodule CDRex.Changeset do
-
   # TODO: Add tests
   def add_timestamps(%{} = attrs) do
     now = DateTime.utc_now()

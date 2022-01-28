@@ -14,7 +14,7 @@ defmodule CDRex.Factories.CDRFactory do
           service: random_service_type(),
           number_of_units: number_of_units(),
           success: true,
-          timestamp: random_past_naivedatetime(),
+          timestamp: random_past_naivedatetime()
         }
       end
 

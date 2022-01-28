@@ -73,8 +73,8 @@ defmodule CDRex.FileHashesTest do
       assert {:error, changeset} = FileHashes.create(attrs)
 
       assert errors_on(changeset) == %{
-        hash: ["is invalid"]
-      }
+               hash: ["is invalid"]
+             }
     end
   end
 end
