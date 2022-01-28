@@ -141,6 +141,7 @@ defmodule CDRex.CarrierRatesTest do
 
       assert Repo.get_by(CarrierRate,
                id: mms.id,
+               inserted_at: mms.inserted_at,
                carrier_name: "Carrier B",
                direction: :outbound,
                rate: 0.004,
@@ -150,6 +151,7 @@ defmodule CDRex.CarrierRatesTest do
 
       assert Repo.get_by(CarrierRate,
                id: sms.id,
+               inserted_at: sms.inserted_at,
                carrier_name: "Carrier B",
                direction: :outbound,
                rate: 0.001,
@@ -159,6 +161,7 @@ defmodule CDRex.CarrierRatesTest do
 
       assert Repo.get_by(CarrierRate,
                id: voice.id,
+               inserted_at: voice.inserted_at,
                carrier_name: "Carrier B",
                direction: :outbound,
                rate: 0.0025,

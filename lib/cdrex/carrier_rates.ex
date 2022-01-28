@@ -23,7 +23,7 @@ defmodule CDRex.CarrierRates do
     Multi.new()
     |> Multi.insert_all(:carrier_rates, CarrierRate, attrs,
       conflict_target: [:direction, :service, :start_date, :carrier_name],
-      on_conflict: {:replace, [:start_date, :rate, :updated_at]},
+      on_conflict: {:replace_all_except, [:id, :inserted_at]},
       returning: true
     )
     |> Multi.merge(fn _ -> handle_file_hash(file_hash) end)

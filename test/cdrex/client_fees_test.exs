@@ -141,6 +141,7 @@ defmodule CDRex.ClientFeesTest do
 
       assert Repo.get_by(ClientFee,
                id: mms.id,
+               inserted_at: mms.inserted_at,
                client_code: "LIB25",
                direction: :outbound,
                fee: 0.03,
@@ -150,6 +151,7 @@ defmodule CDRex.ClientFeesTest do
 
       assert Repo.get_by(ClientFee,
                id: sms.id,
+               inserted_at: sms.inserted_at,
                client_code: "LIB25",
                direction: :outbound,
                fee: 0.02,
@@ -159,6 +161,7 @@ defmodule CDRex.ClientFeesTest do
 
       assert Repo.get_by(ClientFee,
                id: voice.id,
+               inserted_at: voice.inserted_at,
                client_code: "LIB25",
                direction: :outbound,
                fee: 0.04,
