@@ -280,7 +280,7 @@ defmodule CDRex.CDRs.CDRTest do
                |> Repo.insert()
 
       assert errors_on(changeset) == %{
-               client_code: ["The CDR already exists"]
+               client_code: ["the CDR already exists"]
              }
     end
   end

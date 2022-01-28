@@ -29,6 +29,8 @@ defmodule CDRex.CDRs.CDR do
     :timestamp
   ]
 
+  def fields, do: @fields
+
   def changeset(target \\ %__MODULE__{}, attrs) do
     target
     |> cast(attrs, @fields)
@@ -38,7 +40,7 @@ defmodule CDRex.CDRs.CDR do
     |> validate_length(:carrier_name, max: 255)
     |> unique_constraint([:client_code, :carrier_name, :source_number, :service, :timestamp],
       name: :cdrs_unique,
-      message: "The CDR already exists"
+      message: "the CDR already exists"
     )
   end
 end
