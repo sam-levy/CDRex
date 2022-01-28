@@ -1,0 +1,4 @@
+carrier_name,direction,rating_start_date,sms_rate,mms_rate,voice_rate
+Carrier A,OUTBOUND,2020-01-01,0.001,0.004,0.003
+Carrier B,OUTBOUND,2020-01-01,0.001,0.004,0.0025, wrong_value
+
