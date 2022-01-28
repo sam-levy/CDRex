@@ -13,6 +13,8 @@ defmodule CDRex.CarrierRates.CarrierRate do
 
   @fields [:carrier_name, :start_date, :rate, :service, :direction]
 
+  def fields, do: @fields
+
   def changeset(target \\ %__MODULE__{}, attrs) do
     target
     |> cast(attrs, @fields)
