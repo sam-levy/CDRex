@@ -6,7 +6,7 @@ defmodule CDRex.Schema do
       import Ecto.Changeset
       import EctoEnum
 
-      @primary_key {:id, :binary_id, []}
+      @primary_key {:id, :binary_id, autogenerate: true}
       @foreign_key_type :binary_id
       @timestamps_opts [type: :utc_datetime_usec]
     end

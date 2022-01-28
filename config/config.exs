@@ -10,7 +10,10 @@ import Config
 config :cdrex,
   namespace: CDRex,
   ecto_repos: [CDRex.Repo],
-  generators: [binary_id: true],
+  generators: [binary_id: true]
+
+# Database configuration
+config :cdrex, CDRex.Repo,
   migration_primary_key: [type: :binary_id],
   migration_foreign_key: [type: :binary_id],
   migration_timestamps: [type: :utc_datetime_usec]
