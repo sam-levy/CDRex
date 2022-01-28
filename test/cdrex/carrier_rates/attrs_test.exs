@@ -1,4 +1,4 @@
-defmodule AttrsTest do
+defmodule CDRex.CarrierRates.AttrsTest do
   use CDRex.DataCase, async: true
 
   alias CDRex.CarrierRates.Attrs
