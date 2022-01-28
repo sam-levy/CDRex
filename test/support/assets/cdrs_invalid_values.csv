@@ -1,0 +1,3 @@
+client_code,client_name,source_number,destination_number,direction,service_type,number_of_units,success,carrier,timestamp
+LIB25,Lib Group,12159538568,17066135090,OUTBOUND,INVALID,39,INVALID,Carrier C,01/01/2021 00:01:03
+LIB25,Lib Group,16619525945,12705575114,OUTBOUND,VOICE,10,TRUE,Carrier B,01/01/2021 00:02:29
