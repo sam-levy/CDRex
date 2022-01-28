@@ -11,6 +11,7 @@ defmodule CDRex.Initializer do
     else
       carrier_rates_file_path = Application.app_dir(:cdrex, "priv/assets/buy_rates.csv")
       client_fees_file_path = Application.app_dir(:cdrex, "priv/assets/sell_rates.csv")
+      cdrs_file_path = Application.app_dir(:cdrex, "priv/assets/cdrs.csv")
 
       case CDRex.CarrierRates.create_from_csv(carrier_rates_file_path) do
         {:ok, _} -> IO.puts("Updated carrier rates from CSV file")
@@ -20,6 +21,11 @@ defmodule CDRex.Initializer do
       case CDRex.ClientFees.create_from_csv(client_fees_file_path) do
         {:ok, _} -> IO.puts("Updated client fees from CSV file")
         {:error, message} -> IO.puts("client fees: " <> message)
+      end
+
+      case CDRex.CDRs.create_from_csv(cdrs_file_path) do
+        {:ok, _} -> IO.puts("Updated cdrs from CSV file")
+        {:error, message} -> IO.puts("cdrs: " <> message)
       end
     end
   end
