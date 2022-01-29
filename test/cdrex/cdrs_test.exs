@@ -178,6 +178,167 @@ defmodule CDRex.CDRsTest do
              )
     end
 
+    test "updates an existing CDR" do
+      insert(:carrier_rate,
+        carrier_name: "Carrier B",
+        start_date: ~D[2020-06-01],
+        service: :voice,
+        direction: :inbound,
+        rate: 0.001
+      )
+
+      insert(:client_fee,
+        client_code: "BIZ00",
+        start_date: ~D[2020-06-01],
+        service: :voice,
+        direction: :inbound,
+        fee: 0.01
+      )
+
+      %{id: id} =
+        insert(:cdr,
+          carrier_name: "Carrier B",
+          client_code: "BIZ00",
+          client_name: "Biznode",
+          destination_number: "17148943322",
+          direction: :inbound,
+          number_of_units: 10,
+          service: :voice,
+          source_number: "16197558541",
+          success: true,
+          timestamp: ~N[2020-12-31 23:59:11]
+        )
+
+      attrs = %{
+        carrier_name: "Carrier B",
+        client_code: "BIZ00",
+        client_name: "Biznode",
+        destination_number: "17148943322",
+        direction: "inbound",
+        number_of_units: "20",
+        service: "voice",
+        source_number: "16197558541",
+        success: "true",
+        timestamp: ~N[2020-12-31 23:59:11]
+      }
+
+      assert {:ok,
+              [
+                %CDR{
+                  id: ^id,
+                  amount: 0.22,
+                  carrier_name: "Carrier B",
+                  client_code: "BIZ00",
+                  client_name: "Biznode",
+                  destination_number: "17148943322",
+                  direction: :inbound,
+                  number_of_units: 20,
+                  service: :voice,
+                  source_number: "16197558541",
+                  success: true,
+                  timestamp: ~N[2020-12-31 23:59:11]
+                }
+              ]} = CDRs.create(attrs)
+
+      assert Repo.aggregate(CDR, :count) == 1
+    end
+
+    test "inserts a CDR when the keys differ from an existing" do
+      insert(:carrier_rate,
+        carrier_name: "Carrier B",
+        start_date: ~D[2020-06-01],
+        service: :voice,
+        direction: :inbound,
+        rate: 0.001
+      )
+
+      insert(:client_fee,
+        client_code: "BIZ00",
+        start_date: ~D[2020-06-01],
+        service: :voice,
+        direction: :inbound,
+        fee: 0.01
+      )
+
+      %{id: existing_cdr_id} =
+        insert(:cdr,
+          amount: 0.11,
+          carrier_name: "Carrier B",
+          client_code: "BIZ00",
+          client_name: "Biznode",
+          destination_number: "17148943322",
+          direction: :inbound,
+          number_of_units: 10,
+          service: :voice,
+          source_number: "16197558541",
+          success: true,
+          timestamp: ~N[2020-12-31 23:59:11]
+        )
+
+      attrs = %{
+        carrier_name: "Carrier B",
+        client_code: "BIZ00",
+        client_name: "Biznode",
+        destination_number: "17148943322",
+        direction: "inbound",
+        number_of_units: "10",
+        service: "voice",
+        source_number: "16197558541",
+        success: "true",
+        timestamp: ~N[2021-01-01 23:59:11]
+      }
+
+      assert {:ok,
+              [
+                %CDR{
+                  id: new_cdr_id,
+                  amount: 0.11,
+                  carrier_name: "Carrier B",
+                  client_code: "BIZ00",
+                  client_name: "Biznode",
+                  destination_number: "17148943322",
+                  direction: :inbound,
+                  number_of_units: 10,
+                  service: :voice,
+                  source_number: "16197558541",
+                  success: true,
+                  timestamp: ~N[2021-01-01 23:59:11]
+                }
+              ]} = CDRs.create(attrs)
+
+      assert Repo.aggregate(CDR, :count) == 2
+
+      assert Repo.get_by(CDR,
+               id: existing_cdr_id,
+               amount: 0.11,
+               carrier_name: "Carrier B",
+               client_code: "BIZ00",
+               client_name: "Biznode",
+               destination_number: "17148943322",
+               direction: :inbound,
+               number_of_units: 10,
+               service: :voice,
+               source_number: "16197558541",
+               success: true,
+               timestamp: ~N[2020-12-31 23:59:11]
+             )
+
+      assert Repo.get_by(CDR,
+               id: new_cdr_id,
+               amount: 0.11,
+               carrier_name: "Carrier B",
+               client_code: "BIZ00",
+               client_name: "Biznode",
+               destination_number: "17148943322",
+               direction: :inbound,
+               number_of_units: 10,
+               service: :voice,
+               source_number: "16197558541",
+               success: true,
+               timestamp: ~N[2021-01-01 23:59:11]
+             )
+    end
+
     test "invalid attrs" do
       insert(:carrier_rate,
         carrier_name: "Carrier B",
