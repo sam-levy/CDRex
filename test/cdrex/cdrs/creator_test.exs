@@ -1,7 +1,7 @@
-defmodule CDRex.CDRsTest do
+defmodule CDRex.CDRs.CreatorTest do
   use CDRex.DataCase, async: true
 
-  alias CDRex.CDRs
+  alias CDRex.CDRs.Creator
   alias CDRex.CDRs.CDR
   alias CDRex.FileHashes
   alias CDRex.FileHashes.FileHash
@@ -53,7 +53,7 @@ defmodule CDRex.CDRsTest do
                   success: true,
                   timestamp: ~N[2020-12-31 23:59:11]
                 }
-              ]} = CDRs.create(attrs)
+              ]} = Creator.create(attrs)
 
       assert Repo.get_by(CDR,
                id: id,
@@ -145,7 +145,7 @@ defmodule CDRex.CDRsTest do
                   success: true,
                   timestamp: ~N[2020-12-30 22:00:00]
                 }
-              ]} = CDRs.create(attrs)
+              ]} = Creator.create(attrs)
 
       assert Repo.get_by(CDR,
                id: id_1,
@@ -238,7 +238,7 @@ defmodule CDRex.CDRsTest do
                   success: true,
                   timestamp: ~N[2020-12-31 23:59:11]
                 }
-              ]} = CDRs.create(attrs)
+              ]} = Creator.create(attrs)
 
       assert Repo.aggregate(CDR, :count) == 1
     end
@@ -304,7 +304,7 @@ defmodule CDRex.CDRsTest do
                   success: true,
                   timestamp: ~N[2021-01-01 23:59:11]
                 }
-              ]} = CDRs.create(attrs)
+              ]} = Creator.create(attrs)
 
       assert Repo.aggregate(CDR, :count) == 2
 
@@ -369,7 +369,7 @@ defmodule CDRex.CDRsTest do
         timestamp: ~N[2020-12-31 23:59:11]
       }
 
-      assert {:error, changeset} = CDRs.create(attrs)
+      assert {:error, changeset} = Creator.create(attrs)
 
       assert errors_on(changeset) == %{
                direction: ["is invalid"],
@@ -485,7 +485,7 @@ defmodule CDRex.CDRsTest do
                   success: true,
                   timestamp: ~N[2020-06-01 23:00:00]
                 }
-              ]} = CDRs.create(attrs)
+              ]} = Creator.create(attrs)
     end
 
     test "creates a CDR with `amount` zero when the attrs `success` is false" do
@@ -533,7 +533,7 @@ defmodule CDRex.CDRsTest do
                   success: false,
                   timestamp: ~N[2020-12-31 23:59:11]
                 }
-              ]} = CDRs.create(attrs)
+              ]} = Creator.create(attrs)
     end
 
     test "when there is no carrier rate for the CDR attrs" do
@@ -568,7 +568,7 @@ defmodule CDRex.CDRsTest do
         timestamp: ~N[2020-12-31 23:59:59]
       }
 
-      assert {:error, changeset} = CDRs.create(attrs)
+      assert {:error, changeset} = Creator.create(attrs)
 
       assert errors_on(changeset) == %{
                amount: ["carrier rate not found for the CDR"]
@@ -638,7 +638,7 @@ defmodule CDRex.CDRsTest do
         }
       ]
 
-      assert {:error, %{changes: %{client_code: "BIZ00"}} = changeset} = CDRs.create(attrs)
+      assert {:error, %{changes: %{client_code: "BIZ00"}} = changeset} = Creator.create(attrs)
 
       assert errors_on(changeset) == %{
                amount: ["client fee not found for the CDR"]
@@ -685,7 +685,7 @@ defmodule CDRex.CDRsTest do
         timestamp: ~N[2020-12-31 23:59:59]
       }
 
-      assert {:error, changeset} = CDRs.create(attrs)
+      assert {:error, changeset} = Creator.create(attrs)
 
       assert errors_on(changeset) == %{
                amount: ["carrier rate not found for the CDR timestamp"]
@@ -754,7 +754,7 @@ defmodule CDRex.CDRsTest do
         }
       ]
 
-      assert {:error, %{changes: %{client_code: "BIZ00"}} = changeset} = CDRs.create(attrs)
+      assert {:error, %{changes: %{client_code: "BIZ00"}} = changeset} = Creator.create(attrs)
 
       assert errors_on(changeset) == %{
                amount: ["client fee not found for the CDR timestamp"]
@@ -858,7 +858,7 @@ defmodule CDRex.CDRsTest do
                   amount: 0.31,
                   timestamp: ~N[2021-01-01 00:01:03]
                 }
-              ]} = CDRs.create_from_csv(csv_file_path)
+              ]} = Creator.create_from_csv(csv_file_path)
 
       file_hash = FileHashes.hash_file(csv_file_path)
 
@@ -937,7 +937,7 @@ defmodule CDRex.CDRsTest do
                   amount: 0.31,
                   timestamp: ~N[2021-01-01 00:01:03]
                 }
-              ]} = CDRs.create_from_csv(csv_file_path)
+              ]} = Creator.create_from_csv(csv_file_path)
 
       assert Repo.aggregate(CDR, :count) == 4
 
@@ -963,16 +963,16 @@ defmodule CDRex.CDRsTest do
     end
 
     test "return error when file has already been imported", %{csv_file_path: csv_file_path} do
-      assert {:ok, _cdrs} = CDRs.create_from_csv(csv_file_path)
+      assert {:ok, _cdrs} = Creator.create_from_csv(csv_file_path)
 
-      assert CDRs.create_from_csv(csv_file_path) ==
+      assert Creator.create_from_csv(csv_file_path) ==
                {:error, "the file has already been imported"}
     end
 
     test "returns changeset errors when csv contains invalid values" do
       csv_file_path = "test/support/assets/cdrs_invalid_values.csv"
 
-      assert {:error, changeset} = CDRs.create_from_csv(csv_file_path)
+      assert {:error, changeset} = Creator.create_from_csv(csv_file_path)
 
       assert errors_on(changeset) == %{
                success: ["is invalid"],
@@ -987,7 +987,7 @@ defmodule CDRex.CDRsTest do
     test "returns error when timestamp format is invalid" do
       csv_file_path = "test/support/assets/cdrs_invalid_timestamp.csv"
 
-      assert CDRs.create_from_csv(csv_file_path) == {:error, "invalid timestamp format"}
+      assert Creator.create_from_csv(csv_file_path) == {:error, "invalid timestamp format"}
 
       file_hash = FileHashes.hash_file(csv_file_path)
 
@@ -997,7 +997,7 @@ defmodule CDRex.CDRsTest do
     test "malformed csv file" do
       csv_file_path = "test/support/assets/malformed_less_values.csv"
 
-      assert CDRs.create_from_csv(csv_file_path) == {:error, "malformed csv file"}
+      assert Creator.create_from_csv(csv_file_path) == {:error, "malformed csv file"}
 
       file_hash = FileHashes.hash_file(csv_file_path)
 
@@ -1007,7 +1007,7 @@ defmodule CDRex.CDRsTest do
     test "empty csv file" do
       csv_file_path = "test/support/assets/empty.csv"
 
-      assert CDRs.create_from_csv(csv_file_path) == {:error, "empty file"}
+      assert Creator.create_from_csv(csv_file_path) == {:error, "empty file"}
 
       file_hash = FileHashes.hash_file(csv_file_path)
 
