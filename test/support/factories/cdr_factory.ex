@@ -4,6 +4,8 @@ defmodule CDRex.Factories.CDRFactory do
       alias CDRex.CDRs.CDR
 
       def factory(:cdr, attrs) do
+        number_of_units = number_of_units()
+
         %CDR{
           client_name: sequence(&"Client_#{&1}"),
           client_code: sequence(&"#{random_string_number()}#{&1}"),
@@ -12,9 +14,10 @@ defmodule CDRex.Factories.CDRFactory do
           destination_number: random_string_number(),
           direction: random_direction_type(),
           service: random_service_type(),
-          number_of_units: number_of_units(),
+          number_of_units: number_of_units,
           success: true,
-          timestamp: random_past_naivedatetime()
+          timestamp: random_past_naivedatetime(),
+          amount: number_of_units * random_rate()
         }
       end
 

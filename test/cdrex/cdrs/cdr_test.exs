@@ -71,7 +71,8 @@ defmodule CDRex.CDRs.CDRTest do
         destination_number: random_string_number(),
         direction: random_direction_type(),
         success: true,
-        number_of_units: number_of_units()
+        number_of_units: number_of_units(),
+        amount: number_of_units() * random_rate()
       }
 
       assert_raise Ecto.ConstraintError,
@@ -101,7 +102,8 @@ defmodule CDRex.CDRs.CDRTest do
         destination_number: random_string_number(),
         direction: random_direction_type(),
         success: true,
-        number_of_units: number_of_units()
+        number_of_units: number_of_units(),
+        amount: number_of_units() * random_rate()
       }
 
       assert_raise Ecto.ConstraintError,
@@ -131,7 +133,8 @@ defmodule CDRex.CDRs.CDRTest do
         destination_number: random_string_number(),
         direction: random_direction_type(),
         success: true,
-        number_of_units: number_of_units()
+        number_of_units: number_of_units(),
+        amount: number_of_units() * random_rate()
       }
 
       assert_raise Ecto.ConstraintError,
@@ -152,7 +155,8 @@ defmodule CDRex.CDRs.CDRTest do
         service: :sms,
         number_of_units: 10,
         success: true,
-        timestamp: truncated_naivedatetime()
+        timestamp: truncated_naivedatetime(),
+        amount: 2.0
       }
 
       assert changeset = CDR.changeset(attrs)
@@ -169,7 +173,8 @@ defmodule CDRex.CDRs.CDRTest do
                service: attrs[:service],
                number_of_units: attrs[:number_of_units],
                success: attrs[:success],
-               timestamp: attrs[:timestamp]
+               timestamp: attrs[:timestamp],
+               amount: attrs[:amount]
              }
     end
 
@@ -184,7 +189,8 @@ defmodule CDRex.CDRs.CDRTest do
         service: :invalid,
         number_of_units: :invalid,
         success: :invalid,
-        timestamp: :invalid
+        timestamp: :invalid,
+        amount: :invalid
       }
 
       assert changeset = CDR.changeset(attrs)
@@ -201,11 +207,12 @@ defmodule CDRex.CDRs.CDRTest do
                service: ["is invalid"],
                source_number: ["is invalid"],
                success: ["is invalid"],
-               timestamp: ["is invalid"]
+               timestamp: ["is invalid"],
+               amount: ["is invalid"]
              }
     end
 
-    test "missing required attr" do
+    test "missing required attrs" do
       assert changeset = CDR.changeset(%{})
 
       refute changeset.valid?
@@ -220,7 +227,8 @@ defmodule CDRex.CDRs.CDRTest do
                service: ["can't be blank"],
                source_number: ["can't be blank"],
                success: ["can't be blank"],
-               timestamp: ["can't be blank"]
+               timestamp: ["can't be blank"],
+               amount: ["can't be blank"]
              }
     end
 
@@ -235,7 +243,8 @@ defmodule CDRex.CDRs.CDRTest do
         service: :sms,
         number_of_units: 10,
         success: true,
-        timestamp: truncated_naivedatetime()
+        timestamp: truncated_naivedatetime(),
+        amount: 2.0
       }
 
       assert changeset = CDR.changeset(attrs)
@@ -271,7 +280,8 @@ defmodule CDRex.CDRs.CDRTest do
         destination_number: random_string_number(),
         direction: random_direction_type(),
         success: true,
-        number_of_units: number_of_units()
+        number_of_units: number_of_units(),
+        amount: 2.0
       }
 
       assert {:error, changeset} =
@@ -281,6 +291,27 @@ defmodule CDRex.CDRs.CDRTest do
 
       assert errors_on(changeset) == %{
                client_code: ["the CDR already exists"]
+             }
+    end
+  end
+
+  describe "base_changeset/2" do
+    test "missing required attr ignores amount" do
+      assert changeset = CDR.base_changeset(%{})
+
+      refute changeset.valid?
+
+      assert errors_on(changeset) == %{
+               carrier_name: ["can't be blank"],
+               client_code: ["can't be blank"],
+               client_name: ["can't be blank"],
+               destination_number: ["can't be blank"],
+               direction: ["can't be blank"],
+               number_of_units: ["can't be blank"],
+               service: ["can't be blank"],
+               source_number: ["can't be blank"],
+               success: ["can't be blank"],
+               timestamp: ["can't be blank"]
              }
     end
   end

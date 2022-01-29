@@ -13,6 +13,7 @@ defmodule CDRex.Repo.Migrations.CreateCdrsTable do
       add :number_of_units, :integer, null: false
       add :success, :boolean, null: false
       add :timestamp, :naive_datetime, null: false
+      add :amount, :float, null: false
 
       timestamps()
     end
