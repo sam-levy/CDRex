@@ -24,7 +24,7 @@ defmodule CDRex.Initializer do
       end
 
       case CDRex.CDRs.create_from_csv(cdrs_file_path) do
-        {:ok, _} -> IO.puts("Updated cdrs from CSV file")
+        {:ok, _} -> IO.puts("Updated CDRs from CSV file")
         {:error, message} -> IO.puts("cdrs: " <> message)
       end
     end
