@@ -11,7 +11,7 @@ defmodule CDRex.CarrierRates do
     CarrierRate
     |> where([cr], cr.carrier_name in ^carrier_names)
     |> order_by([:start_date, :carrier_name])
-    |> Repo.all
+    |> Repo.all()
   end
 
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do

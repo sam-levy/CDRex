@@ -17,11 +17,11 @@ defmodule CDRex.CarrierRatesTest do
       _to_ignore = insert(:carrier_rate, carrier_name: "Carrier C", start_date: ~D[2020-01-01])
 
       assert [
-              %CarrierRate{carrier_name: "Carrier A", start_date: ~D[2020-01-01]},
-              %CarrierRate{carrier_name: "Carrier B", start_date: ~D[2020-01-01]},
-              %CarrierRate{carrier_name: "Carrier A", start_date: ~D[2020-06-01]},
-              %CarrierRate{carrier_name: "Carrier B", start_date: ~D[2020-06-01]}
-            ] = CarrierRates.list_by_carrier_name(["Carrier A", "Carrier B"])
+               %CarrierRate{carrier_name: "Carrier A", start_date: ~D[2020-01-01]},
+               %CarrierRate{carrier_name: "Carrier B", start_date: ~D[2020-01-01]},
+               %CarrierRate{carrier_name: "Carrier A", start_date: ~D[2020-06-01]},
+               %CarrierRate{carrier_name: "Carrier B", start_date: ~D[2020-06-01]}
+             ] = CarrierRates.list_by_carrier_name(["Carrier A", "Carrier B"])
     end
 
     test "when there is no carrier rate for the carrier name" do

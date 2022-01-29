@@ -11,7 +11,7 @@ defmodule CDRex.ClientFees do
     ClientFee
     |> where([cf], cf.client_code in ^client_codes)
     |> order_by([:start_date, :client_code])
-    |> Repo.all
+    |> Repo.all()
   end
 
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do

@@ -211,9 +211,9 @@ defmodule CDRex.CDRsTest do
       assert {:error, changeset} = CDRs.create(attrs)
 
       assert errors_on(changeset) == %{
-        direction: ["is invalid"],
-        success: ["is invalid"]
-      }
+               direction: ["is invalid"],
+               success: ["is invalid"]
+             }
 
       assert Repo.aggregate(CDR, :count) == 0
     end
