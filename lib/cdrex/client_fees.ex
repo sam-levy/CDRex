@@ -1,9 +1,18 @@
 defmodule CDRex.ClientFees do
+  import Ecto.Query
+
   alias Ecto.{Changeset, Multi}
 
   alias CDRex.ClientFees.{Attrs, ClientFee}
   alias CDRex.{FileHashes, Parser}
   alias CDRex.Repo
+
+  def list_by_client_code(client_codes) when is_list(client_codes) do
+    ClientFee
+    |> where([cf], cf.client_code in ^client_codes)
+    |> order_by([:start_date, :client_code])
+    |> Repo.all
+  end
 
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do
     with {:ok, file_hash} <- FileHashes.validate(csv_file_path),

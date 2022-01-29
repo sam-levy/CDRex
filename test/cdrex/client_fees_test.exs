@@ -6,6 +6,31 @@ defmodule CDRex.ClientFeesTest do
   alias CDRex.FileHashes
   alias CDRex.FileHashes.FileHash
 
+  describe "list_by_client_code/1" do
+    test "returns a list ordered by `start_date` when a list of carrier client codes are provided" do
+      insert(:client_fee, client_code: "RAB11", start_date: ~D[2020-06-01])
+      insert(:client_fee, client_code: "RAB11", start_date: ~D[2020-01-01])
+
+      insert(:client_fee, client_code: "LIB25", start_date: ~D[2020-06-01])
+      insert(:client_fee, client_code: "LIB25", start_date: ~D[2020-01-01])
+
+      _to_ignore = insert(:client_fee, client_code: "BIZ00", start_date: ~D[2020-01-01])
+
+      assert [
+               %ClientFee{client_code: "LIB25", start_date: ~D[2020-01-01]},
+               %ClientFee{client_code: "RAB11", start_date: ~D[2020-01-01]},
+               %ClientFee{client_code: "LIB25", start_date: ~D[2020-06-01]},
+               %ClientFee{client_code: "RAB11", start_date: ~D[2020-06-01]}
+             ] = ClientFees.list_by_client_code(["LIB25", "RAB11"])
+    end
+
+    test "when there is no carrier rate for the carrier name" do
+      insert_list(2, :client_fee, client_code: "LIB25")
+
+      assert ClientFees.list_by_client_code(["RAB11"]) == []
+    end
+  end
+
   describe "create_from_csv/1" do
     test "creates client fees from a CSV file and add insert file hash" do
       csv_file_path = "test/support/assets/sell_rates.csv"
