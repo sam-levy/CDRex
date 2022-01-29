@@ -64,7 +64,7 @@ defmodule CDRex.CDRs do
       carrier_names
       |> CarrierRates.list_by_carrier_name()
       |> Enum.reduce(%{}, fn cr, acc ->
-        key = {cr.carrier_name, cr.service, cr.direction}
+        key = {String.downcase(cr.carrier_name), cr.service, cr.direction}
         values = Map.get(acc, key, [])
 
         Map.put(acc, key, [cr | values])
@@ -74,7 +74,7 @@ defmodule CDRex.CDRs do
       client_codes
       |> ClientFees.list_by_client_code()
       |> Enum.reduce(%{}, fn cf, acc ->
-        key = {cf.client_code, cf.service, cf.direction}
+        key = {String.downcase(cf.client_code), cf.service, cf.direction}
         values = Map.get(acc, key, [])
 
         Map.put(acc, key, [cf | values])
@@ -153,10 +153,12 @@ defmodule CDRex.CDRs do
       timestamp: timestamp
     } = attrs
 
+    carrier_rate_key = {String.downcase(carrier_name), service, direction}
+    client_fee_key = {String.downcase(client_code), service, direction}
+
     with {:ok, carrier_rates} <-
-           get_items("carrier rate", indexed_carrier_rates, {carrier_name, service, direction}),
-         {:ok, client_fees} <-
-           get_items("client fee", indexed_client_fees, {client_code, service, direction}),
+           get_items("carrier rate", indexed_carrier_rates, carrier_rate_key),
+         {:ok, client_fees} <- get_items("client fee", indexed_client_fees, client_fee_key),
          {:ok, %{rate: carrier_rate}} <- get_item("carrier rate", carrier_rates, timestamp),
          {:ok, %{fee: client_fee}} <- get_item("client fee", client_fees, timestamp) do
       {:ok, %{carrier_rate: carrier_rate, client_fee: client_fee}}
