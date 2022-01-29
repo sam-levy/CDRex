@@ -20,9 +20,12 @@ defmodule CDRexWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: CDRexWeb
+      use StrongParams
 
       import Plug.Conn
       alias CDRexWeb.Router.Helpers, as: Routes
+
+      action_fallback(CDRexWeb.FallbackController)
     end
   end
 
