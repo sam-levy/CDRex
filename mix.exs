@@ -44,7 +44,8 @@ defmodule CDRex.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:ecto_enum, "~> 1.4"},
       {:ecto_enum_migration, "~> 0.3.4"},
-      {:nimble_csv, "~> 1.1"}
+      {:nimble_csv, "~> 1.1"},
+      {:strong_params, "~> 0.2.2"}
     ]
   end
 

@@ -23,6 +23,7 @@ defmodule CDRexWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import CDRexWeb.ConnCase
+      import CDRex.Factory
 
       alias CDRexWeb.Router.Helpers, as: Routes
 
