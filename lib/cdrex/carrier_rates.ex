@@ -1,9 +1,18 @@
 defmodule CDRex.CarrierRates do
+  import Ecto.Query
+
   alias Ecto.{Changeset, Multi}
 
   alias CDRex.CarrierRates.{Attrs, CarrierRate}
   alias CDRex.{FileHashes, Parser}
   alias CDRex.Repo
+
+  def list_by_carrier_name(carrier_names) when is_list(carrier_names) do
+    CarrierRate
+    |> where([cr], cr.carrier_name in ^carrier_names)
+    |> order_by([:start_date, :carrier_name])
+    |> Repo.all
+  end
 
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do
     with {:ok, file_hash} <- FileHashes.validate(csv_file_path),

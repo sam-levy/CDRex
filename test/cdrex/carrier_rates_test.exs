@@ -6,6 +6,31 @@ defmodule CDRex.CarrierRatesTest do
   alias CDRex.FileHashes
   alias CDRex.FileHashes.FileHash
 
+  describe "list_by_carrier_name/1" do
+    test "returns a list ordered by `start_date`" do
+      insert(:carrier_rate, carrier_name: "Carrier B", start_date: ~D[2020-06-01])
+      insert(:carrier_rate, carrier_name: "Carrier B", start_date: ~D[2020-01-01])
+
+      insert(:carrier_rate, carrier_name: "Carrier A", start_date: ~D[2020-06-01])
+      insert(:carrier_rate, carrier_name: "Carrier A", start_date: ~D[2020-01-01])
+
+      _to_ignore = insert(:carrier_rate, carrier_name: "Carrier C", start_date: ~D[2020-01-01])
+
+      assert [
+              %CarrierRate{carrier_name: "Carrier A", start_date: ~D[2020-01-01]},
+              %CarrierRate{carrier_name: "Carrier B", start_date: ~D[2020-01-01]},
+              %CarrierRate{carrier_name: "Carrier A", start_date: ~D[2020-06-01]},
+              %CarrierRate{carrier_name: "Carrier B", start_date: ~D[2020-06-01]}
+            ] = CarrierRates.list_by_carrier_name(["Carrier A", "Carrier B"])
+    end
+
+    test "when there is no carrier rate for the carrier name" do
+      insert_list(2, :carrier_rate, carrier_name: "Carrier A")
+
+      assert CarrierRates.list_by_carrier_name(["Carrier B"]) == []
+    end
+  end
+
   describe "create_from_csv/1" do
     test "creates carrier rates from a CSV file and add insert file hash" do
       csv_file_path = "test/support/assets/buy_rates.csv"
