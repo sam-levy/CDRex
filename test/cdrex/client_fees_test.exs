@@ -241,5 +241,11 @@ defmodule CDRex.ClientFeesTest do
 
       refute Repo.get_by(FileHash, hash: file_hash)
     end
+
+    test "file not found" do
+      csv_file_path = "test/support/assets/inexistent.csv"
+
+      assert ClientFees.create_from_csv(csv_file_path) == {:error, "file not found"}
+    end
   end
 end
