@@ -2,7 +2,7 @@
 
 ![**CDRex**](CDRex.png)
 
-**CDRex** is an Elixir API that keeps track and calcutate the billable amount of Voice call Detail Records (CDR) based on rates charged by carriers and fees charged from customers for different service types.
+**CDRex** is an Elixir API that keeps track and calcutate the billable amounts of Voice call Detail Records (CDR) based on rates charged by carriers and fees charged from customers for different service types.
 
 ## Installation
 ### Docker
@@ -77,7 +77,7 @@ A timestamp will be assigned at the moment of the post and the amount will be ca
 
 - ### `GET /api/v1/cdrs/client_summary_by_month`
 
-This endpoint returns a summary report of amounts to be charged from a particular client in a particular month. the following query params should be appended to the URL: `client_code`, `month` and `year`.
+This endpoint returns a summary report of amounts to be charged from a particular client in a particular month. The following query params should be appended to the URL: `client_code`, `month` and `year`.
 
 To exemplify, the following query should return the total amount to be charged per service type for the client `CLIENTCODE`.
 
