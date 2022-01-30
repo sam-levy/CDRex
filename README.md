@@ -1,9 +1,8 @@
 # CDRex
 
-![CDRex](CDRex.png)
+![**CDRex**](CDRex.png)
 
-
-CDRex is an Elixir API that keeps track and calcutate the billable amount of Voice call Detail Records (CDR) based on rates charged by carriers and fees charged from customers for different service types.
+**CDRex** is an Elixir API that keeps track and calcutate the billable amount of Voice call Detail Records (CDR) based on rates charged by carriers and fees charged from customers for different service types.
 
 ## Installation
 ### Docker
@@ -52,13 +51,13 @@ mix phx.server
 
 Once the server is running the endpoints will be available on `localhost:4000`.
 
-The firs time you start CDRex it will parse and persist the carrier rates, client fees and CDRs provided by the CSV files in `priv/assets`. It will also calculate the billing amount for each CDR based on on the data from carriers and clients. CDRex keeps track of all imported CSVs by persisting the `SHA256` hash of the file in order to avoid unecessary re-imports. If you restart CDRex it will only import modified files.
+The firs time you start **CDRex** it will parse and persist the carrier rates, client fees and CDRs provided by the CSV files in `priv/assets`. It will also calculate the billing amount for each CDR based on on the data from carriers and clients. **CDRex** keeps track of all imported CSVs by persisting the `SHA256` hash of the file in order to avoid unecessary re-imports. If you restart **CDRex** it will only import modified files.
 
-CDRex have two endpoints:
+**CDRex** have two endpoints:
 
 - ### `POST /api/v1/cdrs`
 
-Use this endpoint to post new CDRs. CDRex will calculate its billable amount as soon as it is imported. The body of the requisition should have the following params:
+Use this endpoint to post new CDRs. **CDRex** will calculate its billable amount as soon as it is imported. The body of the requisition should have the following params:
 
 ```json
 {
