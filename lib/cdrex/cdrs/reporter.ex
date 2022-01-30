@@ -1,9 +1,40 @@
 defmodule CDRex.CDRs.Reporter do
+  @moduledoc """
+    Functions to generate reports related to CDRs.
+  """
+
   import Ecto.Query
 
   alias CDRex.CDRs.CDR
   alias CDRex.Repo
 
+  @doc """
+    Returns a map containing contaning the count and total amount of successful operations
+    per service type for a client and month.
+
+    Return example:
+
+    ```
+    &{
+        service_1 %{
+            count: 1,
+            total_price: 1.5
+        },
+        service_2: %{
+            count: 1,
+            total_price: 1.5
+        },
+        service_3: %{
+            count: 1,
+            total_price: 1.5
+        },
+        total: %{
+            count: 3,
+            total_price: 4.5
+        }
+    }
+    ```
+  """
   def client_summary_by_month(client_code, month, year)
       when is_binary(client_code) and is_integer(month) and is_integer(year) and month <= 12 do
     grouped_aggregates =

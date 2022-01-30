@@ -1,4 +1,8 @@
 defmodule CDRex.CDRs do
+  @moduledoc """
+    The CDRs context.
+  """
+
   alias CDRex.CDRs.{Creator, Reporter}
 
   defdelegate create(attrs, opts \\ []), to: Creator

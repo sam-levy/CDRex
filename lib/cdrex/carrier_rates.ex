@@ -1,4 +1,8 @@
 defmodule CDRex.CarrierRates do
+  @moduledoc """
+    The CarrierRates context.
+  """
+
   import Ecto.Query
 
   alias Ecto.{Changeset, Multi}
@@ -7,6 +11,9 @@ defmodule CDRex.CarrierRates do
   alias CDRex.{FileHashes, Parser}
   alias CDRex.Repo
 
+  @doc """
+    Returns a list of carrier rates by the carrier name ordered by `start_date` and `carrier_name`.
+  """
   def list_by_carrier_name(carrier_names) when is_list(carrier_names) do
     CarrierRate
     |> where([cr], cr.carrier_name in ^carrier_names)
@@ -14,6 +21,9 @@ defmodule CDRex.CarrierRates do
     |> Repo.all()
   end
 
+  @doc """
+    Creates carrier rates from a CSV file.
+  """
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do
     with {:ok, file_hash} <- FileHashes.validate(csv_file_path),
          {:ok, parsed_values} <- Parser.parse_csv_with_headers(csv_file_path),
@@ -26,6 +36,9 @@ defmodule CDRex.CarrierRates do
     end
   end
 
+  @doc """
+    Creates carrier rates from a list of attrs.
+  """
   def create(attrs, opts \\ []) when is_list(attrs) do
     file_hash = Keyword.get(opts, :file_hash)
 

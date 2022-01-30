@@ -1,4 +1,8 @@
 defmodule CDRex.CDRs.Creator do
+  @moduledoc """
+    Functions to create CDRs form attrs, a list of attrs or a CSV file.
+  """
+
   import Ecto.Changeset, only: [add_error: 3]
 
   alias Ecto.{Changeset, Multi}
@@ -11,6 +15,9 @@ defmodule CDRex.CDRs.Creator do
 
   def create(attrs, opts \\ [])
 
+  @doc """
+    Creates CDRs from attrs or a list of attrs.
+  """
   def create(%{} = attrs, opts), do: create([attrs], opts)
 
   def create(attrs_list, opts) when is_list(attrs_list) do
@@ -22,6 +29,9 @@ defmodule CDRex.CDRs.Creator do
     end
   end
 
+  @doc """
+    Creates CDRs from a CSV.
+  """
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do
     with {:ok, file_hash} <- FileHashes.validate(csv_file_path),
          {:ok, parsed_values} <- Parser.parse_csv_with_headers(csv_file_path),

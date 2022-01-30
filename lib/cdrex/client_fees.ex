@@ -1,4 +1,8 @@
 defmodule CDRex.ClientFees do
+  @moduledoc """
+    The ClientFees context.
+  """
+
   import Ecto.Query
 
   alias Ecto.{Changeset, Multi}
@@ -7,6 +11,9 @@ defmodule CDRex.ClientFees do
   alias CDRex.{FileHashes, Parser}
   alias CDRex.Repo
 
+  @doc """
+    Returns a list of client fees by the client code ordered by `start_date` and `client_code`.
+  """
   def list_by_client_code(client_codes) when is_list(client_codes) do
     ClientFee
     |> where([cf], cf.client_code in ^client_codes)
@@ -14,6 +21,9 @@ defmodule CDRex.ClientFees do
     |> Repo.all()
   end
 
+  @doc """
+    Creates client fees from a CSV file.
+  """
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do
     with {:ok, file_hash} <- FileHashes.validate(csv_file_path),
          {:ok, parsed_values} <- Parser.parse_csv_with_headers(csv_file_path),
@@ -26,6 +36,9 @@ defmodule CDRex.ClientFees do
     end
   end
 
+  @doc """
+    Creates client fees from a list of attrs.
+  """
   def create(attrs, opts \\ []) when is_list(attrs) do
     file_hash = Keyword.get(opts, :file_hash)
 

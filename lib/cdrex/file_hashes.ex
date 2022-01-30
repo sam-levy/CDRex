@@ -1,7 +1,14 @@
 defmodule CDRex.FileHashes do
+  @moduledoc """
+    The FileHashes context.
+  """
+
   alias CDRex.FileHashes.FileHash
   alias CDRex.Repo
 
+  @doc """
+    Calculates the `SHA256` hash of a file from the path.
+  """
   def hash_file(file_path) do
     file_path
     |> File.stream!([], 2_048)
@@ -13,6 +20,9 @@ defmodule CDRex.FileHashes do
     _ -> {:error, "file not found"}
   end
 
+  @doc """
+    Checks if a file has already been persisted.
+  """
   def validate(file_path) do
     file_hash = hash_file(file_path)
 
@@ -22,6 +32,9 @@ defmodule CDRex.FileHashes do
     end
   end
 
+  @doc """
+    Inserts a file hash.
+  """
   def create(attrs) do
     attrs
     |> FileHash.changeset()

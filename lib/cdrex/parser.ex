@@ -1,11 +1,16 @@
 defmodule CDRex.Parser do
   @moduledoc """
+    Parse functions.
   """
 
   alias NimbleCSV.RFC4180, as: CSV
 
   @error {:error, "malformed csv file"}
 
+  @doc """
+    Parse the content of a CSV file with headers to a map. The keys of the map
+    will match the header of the file.
+  """
   def parse_csv_with_headers(csv_file_path) when is_binary(csv_file_path) do
     csv_file_path
     |> File.read!()
