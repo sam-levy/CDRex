@@ -13,5 +13,7 @@ defmodule CDRexWeb.Router do
     get "/cdrs/client_summary_by_month", CDRController, :client_summary_by_month
 
     post "/carrier_rates/import", CarrierRateController, :import
+
+    post "/client_fees/import", ClientFeeController, :import
   end
 end
