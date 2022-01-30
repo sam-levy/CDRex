@@ -23,8 +23,7 @@ config :cdrex, CDRexWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "TCm5V86XhuFS5M4YTot0ISEvAQCKSE/a8pYsrs+pJDBuIur7UBq8ibyauEGnI70q",
   render_errors: [view: CDRexWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: CDRex.PubSub,
-  live_view: [signing_salt: "Tjycjr4A"]
+  pubsub_server: CDRex.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,
