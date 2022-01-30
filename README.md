@@ -121,3 +121,17 @@ If you have Elixir installed:
 ```
 mix test
 ```
+
+## Bonus!
+
+**CDRex** can import new CDRs from a CSV file. Files previously imported will be ignored. If a file contains CDRs already imported **CDRex** will update them.
+
+- ### `POST /api/v1/cdrs/import`
+
+#### Body:
+
+```json
+{
+    "file": binary_file
+}
+```
