@@ -6,10 +6,7 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :cdrex, CDRex.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "cdrex_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
+  url: System.get_env("DOCKER_TEST_DATABASE_URL") || "postgres://postgres:postgres@localhost:5432/cdrex_test",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 

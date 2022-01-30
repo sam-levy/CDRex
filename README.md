@@ -9,7 +9,7 @@
 If you have docker installed just run:
 
 ```
-docker-compose up
+docker-compose -f docker-compose.dev.yml up
 ```
 
 ### Asdf
@@ -106,4 +106,18 @@ The return will have the following structure:
         }
     }
 }
+```
+
+## Running Tests
+
+If you are using Docker, just enter:
+
+```
+docker-compose -f docker-compose.dev.yml run -e "MIX_ENV=test" api-dev mix test
+```
+
+If you have Elixir installed:
+
+```
+mix test
 ```
