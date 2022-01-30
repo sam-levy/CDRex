@@ -133,4 +133,131 @@ defmodule CDRexWeb.Api.V1.CDRControllerTest do
              }
     end
   end
+
+  describe "GET api/V1/cdrs/client_summary_by_month [:client_summary_by_month]" do
+    test "returns a summary by client and month", %{conn: conn} do
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :voice,
+        amount: 30.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :sms,
+        amount: 30.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :mms,
+        amount: 35.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      path = Routes.cdr_path(conn, :client_summary_by_month)
+
+      params = %{
+        "client_code" => "BIZ00",
+        "month" => "1",
+        "year" => "2021"
+      }
+
+      response =
+        conn
+        |> get(path, params)
+        |> json_response(200)
+
+      assert response == %{
+               "data" => %{
+                 "voice" => %{"count" => 1, "total_price" => 30.0},
+                 "sms" => %{"count" => 1, "total_price" => 30.0},
+                 "mms" => %{"count" => 1, "total_price" => 35.0},
+                 "total" => %{"count" => 3, "total_price" => 95.0}
+               }
+             }
+    end
+
+    test "when params are not given", %{conn: conn} do
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :voice,
+        amount: 30.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :sms,
+        amount: 30.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :mms,
+        amount: 35.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      path = Routes.cdr_path(conn, :client_summary_by_month)
+
+      response =
+        conn
+        |> get(path, %{})
+        |> json_response(400)
+
+      assert response == %{
+               "errors" => %{
+                 "client_code" => "is required",
+                 "month" => "is required",
+                 "year" => "is required"
+               },
+               "message" => "Bad request"
+             }
+    end
+
+    test "when params are invalid", %{conn: conn} do
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :voice,
+        amount: 30.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :sms,
+        amount: 30.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      insert(:cdr,
+        client_code: "BIZ00",
+        service: :mms,
+        amount: 35.0,
+        timestamp: ~N[2021-01-01 00:00:00]
+      )
+
+      path = Routes.cdr_path(conn, :client_summary_by_month)
+
+      params = %{
+        "client_code" => "BIZ00",
+        "month" => "13",
+        "year" => "2021"
+      }
+
+      response =
+        conn
+        |> get(path, params)
+        |> json_response(422)
+
+      assert response == %{
+               "errors" => "invalid attrs",
+               "message" => "Unprocessable entity"
+             }
+    end
+  end
 end

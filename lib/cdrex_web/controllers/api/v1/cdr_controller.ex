@@ -17,6 +17,14 @@ defmodule CDRexWeb.Api.V1.CDRController do
     ]
   )
 
+  filter_for(:client_summary_by_month,
+    required: [
+      :client_code,
+      {:month, :integer},
+      {:year, :integer}
+    ]
+  )
+
   def create(conn, params) do
     params = Map.put(params, :timestamp, NaiveDateTime.utc_now())
 
@@ -24,6 +32,14 @@ defmodule CDRexWeb.Api.V1.CDRController do
       conn
       |> put_status(:ok)
       |> render(cdr: cdr)
+    end
+  end
+
+  def client_summary_by_month(conn, %{client_code: client_code, month: month, year: year}) do
+    with {:ok, summary} <- CDRs.client_summary_by_month(client_code, month, year) do
+      conn
+      |> put_status(:ok)
+      |> json(%{data: summary})
     end
   end
 end

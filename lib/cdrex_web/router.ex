@@ -9,6 +9,7 @@ defmodule CDRexWeb.Router do
     pipe_through :api
 
     post "/cdrs", CDRController, :create
+    get "/cdrs/client_summary_by_month", CDRController, :client_summary_by_month
   end
 
   # Enables LiveDashboard only for development
