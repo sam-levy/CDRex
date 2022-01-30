@@ -135,3 +135,8 @@ mix test
     "file": binary_file
 }
 ```
+
+Carrier rates and client fees can also be updated by uploding CSV files with the same structure to the following endpoints:
+
+- ### `POST /api/v1/carrier_rates/import`
+- ### `POST /api/v1/client_fees/import`
