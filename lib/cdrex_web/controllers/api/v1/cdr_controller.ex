@@ -17,6 +17,8 @@ defmodule CDRexWeb.Api.V1.CDRController do
     ]
   )
 
+  filter_for(:import, required: [:file])
+
   filter_for(:client_summary_by_month,
     required: [
       :client_code,
@@ -32,6 +34,14 @@ defmodule CDRexWeb.Api.V1.CDRController do
       conn
       |> put_status(:ok)
       |> render(cdr: cdr)
+    end
+  end
+
+  def import(conn, %{file: %{path: file_path}}) do
+    with {:ok, cdrs} <- CDRs.create_from_csv(file_path) do
+      conn
+      |> put_status(:ok)
+      |> render(cdrs: cdrs)
     end
   end
 

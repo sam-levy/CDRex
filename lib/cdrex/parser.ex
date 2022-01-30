@@ -20,6 +20,8 @@ defmodule CDRex.Parser do
       {:error, _} = error -> error
       return when is_list(return) -> {:ok, return}
     end
+  rescue
+    _ -> {:error, "invalid file"}
   end
 
   defp build_attrs_map([]), do: {:error, "empty file"}

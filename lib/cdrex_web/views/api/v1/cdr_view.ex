@@ -7,6 +7,12 @@ defmodule CDRexWeb.Api.V1.CDRView do
     |> handle_data()
   end
 
+  def render("import.json", %{cdrs: cdrs}) do
+    cdrs
+    |> render_many(__MODULE__, "cdr.json")
+    |> handle_data()
+  end
+
   def render("cdr.json", %{cdr: cdr}) do
     %{
       carrier_name: cdr.carrier_name,

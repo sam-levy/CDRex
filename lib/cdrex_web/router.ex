@@ -9,6 +9,7 @@ defmodule CDRexWeb.Router do
     pipe_through :api
 
     post "/cdrs", CDRController, :create
+    post "/cdrs/import", CDRController, :import
     get "/cdrs/client_summary_by_month", CDRController, :client_summary_by_month
   end
 end

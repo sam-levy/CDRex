@@ -160,6 +160,134 @@ defmodule CDRexWeb.Api.V1.CDRControllerTest do
     end
   end
 
+  describe "POST api/V1/cdrs/import [:import]" do
+    setup :insert_rates
+
+    test "import CDRs from a CSV file", %{conn: conn} do
+      path = Routes.cdr_path(conn, :import)
+
+      file = %Plug.Upload{
+        filename: "cdrs.csv",
+        path: Path.absname("test/support/assets/cdrs.csv"),
+        content_type: "text/csv"
+      }
+
+      params = %{
+        "file" => file
+      }
+
+      response =
+        conn
+        |> post(path, params)
+        |> json_response(200)
+
+      assert response == %{
+               "data" => [
+                 %{
+                   "amount" => 1.68,
+                   "carrier_name" => "Carrier B",
+                   "client_code" => "BIZ00",
+                   "client_name" => "Biznode",
+                   "destination_number" => "12703665756",
+                   "direction" => "outbound",
+                   "number_of_units" => 40,
+                   "service" => "voice",
+                   "source_number" => "16013167018",
+                   "success" => true,
+                   "timestamp" => "2021-01-01T00:05:49"
+                 },
+                 %{
+                   "amount" => 1.23,
+                   "carrier_name" => "Carrier A",
+                   "client_code" => "BIZ00",
+                   "client_name" => "Biznode",
+                   "destination_number" => "12705575114",
+                   "direction" => "outbound",
+                   "number_of_units" => 30,
+                   "service" => "voice",
+                   "source_number" => "19803395703",
+                   "success" => true,
+                   "timestamp" => "2021-01-01T00:07:01"
+                 },
+                 %{
+                   "amount" => 0.64,
+                   "carrier_name" => "Carrier B",
+                   "client_code" => "LIB25",
+                   "client_name" => "Lib Group",
+                   "destination_number" => "12705575114",
+                   "direction" => "outbound",
+                   "number_of_units" => 20,
+                   "service" => "voice",
+                   "source_number" => "16619525945",
+                   "success" => true,
+                   "timestamp" => "2021-01-01T00:02:29"
+                 },
+                 %{
+                   "amount" => 0.31,
+                   "carrier_name" => "Carrier A",
+                   "client_code" => "LIB25",
+                   "client_name" => "Lib Group",
+                   "destination_number" => "17066135090",
+                   "direction" => "outbound",
+                   "number_of_units" => 10,
+                   "service" => "voice",
+                   "source_number" => "12159538568",
+                   "success" => true,
+                   "timestamp" => "2021-01-01T00:01:03"
+                 }
+               ]
+             }
+    end
+
+    test "when CSV file has invalid values", %{conn: conn} do
+      path = Routes.cdr_path(conn, :import)
+
+      file = %Plug.Upload{
+        filename: "cdrs.csv",
+        path: Path.absname("test/support/assets/cdrs_invalid_values.csv"),
+        content_type: "text/csv"
+      }
+
+      params = %{
+        "file" => file
+      }
+
+      response =
+        conn
+        |> post(path, params)
+        |> json_response(422)
+
+      assert response == %{
+               "errors" => %{"service" => ["is invalid"], "success" => ["is invalid"]},
+               "message" => "Unprocessable entity"
+             }
+    end
+
+    test "when file is invalid", %{conn: conn} do
+      path = Routes.cdr_path(conn, :import)
+
+      file = %Plug.Upload{
+        filename: "cdrs.csv",
+        path: Path.absname("test/support/assets/tsg.png"),
+        content_type: "text/csv"
+      }
+
+      params = %{
+        "file" => file
+      }
+
+      response =
+        conn
+        |> post(path, params)
+        |> json_response(422)
+
+      assert response == %{
+               "errors" => "invalid file",
+               "message" => "Unprocessable entity"
+             }
+    end
+  end
+
   describe "GET api/V1/cdrs/client_summary_by_month [:client_summary_by_month]" do
     test "returns a summary by client and month", %{conn: conn} do
       insert(:cdr,

@@ -47,6 +47,12 @@ defmodule CDRex.ParserTest do
       assert Parser.parse_csv_with_headers(csv_file_path) == {:error, "empty file"}
     end
 
+    test "invalid format" do
+      csv_file_path = "test/support/assets/tsg.png"
+
+      assert Parser.parse_csv_with_headers(csv_file_path) == {:error, "invalid file"}
+    end
+
     test "file with headers only" do
       csv_file_path = "test/support/assets/headers_only.csv"
 
