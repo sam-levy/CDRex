@@ -16,11 +16,11 @@ defmodule CDRex.CDRs.Reporter do
       |> select([cdr], %{service: cdr.service, count: count(cdr), total_price: sum(cdr.amount)})
       |> Repo.all()
 
-    acc = %{total: %{count: 0, total_price: 0}}
+    acc = %{total: %{count: 0, total_price: 0.0}}
 
     summary =
-      Enum.reduce(
-        grouped_aggregates,
+      grouped_aggregates
+      |> Enum.reduce(
         acc,
         fn %{
              count: service_count,
@@ -36,6 +36,11 @@ defmodule CDRex.CDRs.Reporter do
           })
         end
       )
+      |> Enum.reduce(%{}, fn {service, summary}, acc ->
+        rounded_summary = %{summary | total_price: Float.round(summary.total_price, 4)}
+
+        Map.put(acc, service, rounded_summary)
+      end)
 
     {:ok, summary}
   end
