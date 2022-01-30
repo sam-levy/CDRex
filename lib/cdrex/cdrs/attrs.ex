@@ -10,8 +10,9 @@ defmodule CDRex.CDRs.Attrs do
   defstruct CDR.fields()
 
   @doc """
-    Builds a list of `%CDRs.Attrs{}` struct from a list of attrs.
+    Builds a list of `%CDRs.Attrs{}` struct from attrs.
   """
+  @spec build(list(map())) :: {:ok, list(CDRs.Attrs.t())} | {:error, String.t()}
   def build(attrs_list) when is_list(attrs_list) do
     attrs_list
     |> Enum.reduce_while([], fn attrs, acc ->
@@ -26,6 +27,7 @@ defmodule CDRex.CDRs.Attrs do
     end
   end
 
+  @spec build(map()) :: {:ok, CDRs.Attrs.t()} | {:error, String.t()}
   def build(%{
         "client_code" => client_code,
         "client_name" => client_name,

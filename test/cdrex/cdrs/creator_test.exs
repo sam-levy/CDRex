@@ -860,7 +860,7 @@ defmodule CDRex.CDRs.CreatorTest do
                 }
               ]} = Creator.create_from_csv(csv_file_path)
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       assert Repo.aggregate(CDR, :count) == 4
 
@@ -957,7 +957,7 @@ defmodule CDRex.CDRs.CreatorTest do
                timestamp: ~N[2021-01-01 00:05:49]
              )
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       assert %FileHash{hash: ^file_hash} = Repo.get_by(FileHash, hash: file_hash)
     end
@@ -979,7 +979,7 @@ defmodule CDRex.CDRs.CreatorTest do
                service: ["is invalid"]
              }
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       refute Repo.get_by(FileHash, hash: file_hash)
     end
@@ -989,7 +989,7 @@ defmodule CDRex.CDRs.CreatorTest do
 
       assert Creator.create_from_csv(csv_file_path) == {:error, "invalid timestamp format"}
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       refute Repo.get_by(FileHash, hash: file_hash)
     end
@@ -999,7 +999,7 @@ defmodule CDRex.CDRs.CreatorTest do
 
       assert Creator.create_from_csv(csv_file_path) == {:error, "malformed csv file"}
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       refute Repo.get_by(FileHash, hash: file_hash)
     end
@@ -1009,7 +1009,7 @@ defmodule CDRex.CDRs.CreatorTest do
 
       assert Creator.create_from_csv(csv_file_path) == {:error, "empty file"}
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       refute Repo.get_by(FileHash, hash: file_hash)
     end

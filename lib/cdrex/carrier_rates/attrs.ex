@@ -10,8 +10,9 @@ defmodule CDRex.CarrierRates.Attrs do
   defstruct CarrierRate.fields()
 
   @doc """
-    Builds a list of `%CarrierRates.Attrs{}` struct from a list of attrs.
+    Builds a list of `%CarrierRates.Attrs{}` struct from attrs.
   """
+  @spec build(list(map())) :: {:ok, list(CarrierRates.Attrs.t())} | {:error, String.t()}
   def build(attrs_list) when is_list(attrs_list) do
     attrs_list
     |> Enum.reduce_while([], fn attrs, acc ->

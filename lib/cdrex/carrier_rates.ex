@@ -14,6 +14,7 @@ defmodule CDRex.CarrierRates do
   @doc """
     Returns a list of carrier rates by the carrier name ordered by `start_date` and `carrier_name`.
   """
+  @spec list_by_carrier_name(list(String.t())) :: list(CarrierRate.t())
   def list_by_carrier_name(carrier_names) when is_list(carrier_names) do
     CarrierRate
     |> where([cr], cr.carrier_name in ^carrier_names)
@@ -24,6 +25,7 @@ defmodule CDRex.CarrierRates do
   @doc """
     Creates carrier rates from a CSV file.
   """
+  @spec create_from_csv(String.t()) :: {:ok, CarrierRate.t()} | {:error, any()}
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do
     with {:ok, file_hash} <- FileHashes.validate(csv_file_path),
          {:ok, parsed_values} <- Parser.parse_csv_with_headers(csv_file_path),
@@ -39,6 +41,7 @@ defmodule CDRex.CarrierRates do
   @doc """
     Creates carrier rates from a list of attrs.
   """
+  @spec create(list(map()), Keyword.t()) :: {:ok, list(CarrierRate.t())} | {:error, any()}
   def create(attrs, opts \\ []) when is_list(attrs) do
     file_hash = Keyword.get(opts, :file_hash)
 

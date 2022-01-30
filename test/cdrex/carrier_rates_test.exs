@@ -81,7 +81,7 @@ defmodule CDRex.CarrierRatesTest do
                 }
               ]} = CarrierRates.create_from_csv(csv_file_path)
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       assert %FileHash{hash: ^file_hash} = Repo.get_by(FileHash, hash: file_hash)
     end
@@ -194,7 +194,7 @@ defmodule CDRex.CarrierRatesTest do
                start_date: ~D[2020-01-01]
              )
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       assert %FileHash{hash: ^file_hash} = Repo.get_by(FileHash, hash: file_hash)
     end
@@ -219,7 +219,7 @@ defmodule CDRex.CarrierRatesTest do
                rate: ["is invalid"]
              }
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       refute Repo.get_by(FileHash, hash: file_hash)
     end
@@ -229,7 +229,7 @@ defmodule CDRex.CarrierRatesTest do
 
       assert CarrierRates.create_from_csv(csv_file_path) == {:error, "malformed csv file"}
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       refute Repo.get_by(FileHash, hash: file_hash)
     end
@@ -239,7 +239,7 @@ defmodule CDRex.CarrierRatesTest do
 
       assert CarrierRates.create_from_csv(csv_file_path) == {:error, "empty file"}
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       refute Repo.get_by(FileHash, hash: file_hash)
     end

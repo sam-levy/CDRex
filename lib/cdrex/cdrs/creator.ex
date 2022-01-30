@@ -18,8 +18,10 @@ defmodule CDRex.CDRs.Creator do
   @doc """
     Creates CDRs from attrs or a list of attrs.
   """
+  @spec create(map()) :: {:ok, list(CDR.t())} | {:error, any()}
   def create(%{} = attrs, opts), do: create([attrs], opts)
 
+  @spec create(list(map())) :: {:ok, list(CDR.t())} | {:error, any()}
   def create(attrs_list, opts) when is_list(attrs_list) do
     with {:ok, attrs_list} <- handle_attrs(attrs_list),
          {:ok, cdrs} <- create_multi(attrs_list, opts) do
@@ -32,6 +34,7 @@ defmodule CDRex.CDRs.Creator do
   @doc """
     Creates CDRs from a CSV.
   """
+  @spec create_from_csv(String.t()) :: {:ok, list(CDR.t())} | {:error, any()}
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do
     with {:ok, file_hash} <- FileHashes.validate(csv_file_path),
          {:ok, parsed_values} <- Parser.parse_csv_with_headers(csv_file_path),

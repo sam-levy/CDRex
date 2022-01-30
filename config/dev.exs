@@ -3,7 +3,9 @@ import Config
 # Configure your database
 config :cdrex, CDRex.Repo,
   show_sensitive_data_on_connection_error: true,
-  url: System.get_env("DOCKER_DEV_DATABASE_URL") || "postgres://postgres:postgres@localhost:5432/cdrex_dev"
+  url:
+    System.get_env("DOCKER_DEV_DATABASE_URL") ||
+      "postgres://postgres:postgres@localhost:5432/cdrex_dev"
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

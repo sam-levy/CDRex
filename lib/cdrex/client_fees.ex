@@ -14,6 +14,7 @@ defmodule CDRex.ClientFees do
   @doc """
     Returns a list of client fees by the client code ordered by `start_date` and `client_code`.
   """
+  @spec list_by_client_code(list(String.t())) :: list(ClientFee.t())
   def list_by_client_code(client_codes) when is_list(client_codes) do
     ClientFee
     |> where([cf], cf.client_code in ^client_codes)
@@ -24,6 +25,7 @@ defmodule CDRex.ClientFees do
   @doc """
     Creates client fees from a CSV file.
   """
+  @spec create_from_csv(String.t()) :: {:ok, ClientFee.t()} | {:error, any()}
   def create_from_csv(csv_file_path) when is_binary(csv_file_path) do
     with {:ok, file_hash} <- FileHashes.validate(csv_file_path),
          {:ok, parsed_values} <- Parser.parse_csv_with_headers(csv_file_path),
@@ -39,6 +41,7 @@ defmodule CDRex.ClientFees do
   @doc """
     Creates client fees from a list of attrs.
   """
+  @spec create(list(String.t())) :: {:ok, list(ClientFee.t())} | {:error, any()}
   def create(attrs, opts \\ []) when is_list(attrs) do
     file_hash = Keyword.get(opts, :file_hash)
 

@@ -35,6 +35,8 @@ defmodule CDRex.CDRs.Reporter do
     }
     ```
   """
+  @spec client_summary_by_month(String.t(), integer(), integer()) ::
+          {:ok, map()} | {:error, String.t()}
   def client_summary_by_month(client_code, month, year)
       when is_binary(client_code) and is_integer(month) and is_integer(year) and month <= 12 do
     grouped_aggregates =

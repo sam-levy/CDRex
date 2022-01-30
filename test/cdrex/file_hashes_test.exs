@@ -8,7 +8,7 @@ defmodule CDRex.FileHashesTest do
     test "hashes a file" do
       csv_file_path = "test/support/assets/buy_rates.csv"
 
-      assert file_hash = FileHashes.hash_file(csv_file_path)
+      assert {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       assert String.length(file_hash) == 64
     end
@@ -32,7 +32,7 @@ defmodule CDRex.FileHashesTest do
     test "when the file has already been imported" do
       csv_file_path = "test/support/assets/buy_rates.csv"
 
-      file_hash = FileHashes.hash_file(csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(csv_file_path)
 
       insert(:file_hash, hash: file_hash)
 
@@ -42,7 +42,7 @@ defmodule CDRex.FileHashesTest do
     test "when files are different" do
       existing_csv_file_path = "test/support/assets/buy_rates.csv"
 
-      file_hash = FileHashes.hash_file(existing_csv_file_path)
+      {:ok, file_hash} = FileHashes.hash_file(existing_csv_file_path)
 
       _existing_file = insert(:file_hash, hash: file_hash)
 
