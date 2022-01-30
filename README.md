@@ -15,8 +15,8 @@ docker-compose up
 
 ### Asdf
 
-If you don't have Elixir and Erlang installed, first you need to install asdf.
-In order to install it please follow the instructions on 
+If you don't have Elixir and Erlang installed, you can install both via asdf.
+In order to install asdf please follow the instructions in the
 [asdf documentation page](http://asdf-vm.com/guide/getting-started.html#_1-install-dependencies).
 
 With `asdf` installed, please enter this commands on your terminal to install the required plugins:
@@ -33,7 +33,7 @@ asdf install erlang 24.0.1
 asdf install elixir 1.13.2
 ```
 
-You will also need Postgres installed. You can find installation guides for the main OSs on [postgres download page](https://www.postgresql.org/download/).
+You will also need Postgres installed. You can find installation guides for the main OSs in the [postgres download page](https://www.postgresql.org/download/).
 
 With Erlang, Elixir and Postgres installed, go to the repository folder and type:
 
@@ -42,7 +42,7 @@ mix deps.get
 mix ecto.setup
 ```
 
-After installing the dependencies and seting up the DB, just type the following command to start the server.
+After installing the dependencies and setting up the DB, just type the following command to start the server.
 
 ```
 mix phx.server
@@ -50,15 +50,15 @@ mix phx.server
 
 ## Usage
 
-Once the server is running the endpoints will be available in `localhost:4000`.
+Once the server is running the endpoints will be available on `localhost:4000`.
 
-The firs time you start CDRex it will parse and persist the carrier rates, client fees and CDRs provided by the CSV files in `priv/assets`. It will also calculate the billing amount for each CDR based on on the data from carriers and clients. CDRex keeps track of all imported CSVs by persisting the `SHA256` hash of the file in order to avoid unecessary re-imports. If you reestart CDRex it will only import modified files.
+The firs time you start CDRex it will parse and persist the carrier rates, client fees and CDRs provided by the CSV files in `priv/assets`. It will also calculate the billing amount for each CDR based on on the data from carriers and clients. CDRex keeps track of all imported CSVs by persisting the `SHA256` hash of the file in order to avoid unecessary re-imports. If you restart CDRex it will only import modified files.
 
 CDRex have two endpoints:
 
 - ### `POST /api/v1/cdrs`
 
-Use this endpoint to post new CRDs. CDRex will calculate its billable amount as soon as it is imported. The body of the requisition should have the following params:
+Use this endpoint to post new CDRs. CDRex will calculate its billable amount as soon as it is imported. The body of the requisition should have the following params:
 
 ```json
 {
@@ -84,7 +84,7 @@ To exemplify, the following query should return the total amount to be charged p
 
 `GET /api/v1/cdrs/client_summary_by_month?client_code=CLIENTCODE&month=1&year=2022`
 
-The return will have the following format:
+The return will have the following structure:
 
 ```json
   {
