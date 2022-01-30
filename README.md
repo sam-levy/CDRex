@@ -90,19 +90,19 @@ The return will have the following structure:
     "data": {
         "service_1": {
             "count": 1,
-            "total_price": 1.234
+            "total_price": 1.5
         },
         "service_2": {
             "count": 1,
-            "total_price": 1.234
+            "total_price": 1.5
         },
         "service_3": {
             "count": 1,
-            "total_price": 1.234
+            "total_price": 1.5
         },
         "total": {
-            "count": 1,
-            "total_price": 1.234
+            "count": 3,
+            "total_price": 4.5
         }
     }
 }
