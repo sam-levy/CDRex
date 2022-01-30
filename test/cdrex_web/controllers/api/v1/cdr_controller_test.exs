@@ -79,6 +79,32 @@ defmodule CDRexWeb.Api.V1.CDRControllerTest do
       assert {:ok, _} = NaiveDateTime.from_iso8601(timestamp)
     end
 
+    test "when client does't exist", %{conn: conn} do
+      path = Routes.cdr_path(conn, :create)
+
+      params = %{
+        "carrier_name" => "Carrier C",
+        "client_code" => "BIZ00",
+        "client_name" => "Biznode",
+        "destination_number" => "17148943322",
+        "direction" => "outbound",
+        "number_of_units" => "10",
+        "service" => "voice",
+        "source_number" => "16197558541",
+        "success" => "true"
+      }
+
+      response =
+        conn
+        |> post(path, params)
+        |> json_response(422)
+
+      assert response == %{
+               "errors" => %{"amount" => ["carrier rate not found for the CDR"]},
+               "message" => "Unprocessable entity"
+             }
+    end
+
     test "returns errors for missing required params", %{conn: conn} do
       path = Routes.cdr_path(conn, :create)
 
